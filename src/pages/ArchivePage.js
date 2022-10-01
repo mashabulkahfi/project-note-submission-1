@@ -7,17 +7,17 @@ import { useSearchParams } from 'react-router-dom';
 
 function ArchivePageWrapper() {
 	const [ searchParams, setSearchParams ] = useSearchParams();
+	const keyword = searchParams.get('keyword');
 
-    const keyword = searchParams.get('keyword');
+	function changeSearchParams(keyword){
+		setSearchParams({ keyword });
+	}
 
-    function changeSearchParams(keyword){
-        setSearchParams({ keyword });
-    }
-
-    return <ArchivePage defaultKeyword={keyword} keywordChange={changeSearchParams}/>
+  return <ArchivePage defaultKeyword={keyword} keywordChange={changeSearchParams}/>
 }
 
 class ArchivePage extends React.Component {
+	
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -26,7 +26,7 @@ class ArchivePage extends React.Component {
 		}
 
 		this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
-  	}
+	}
 
 	onKeywordChangeHandler(keyword) {
 		this.setState(() => {

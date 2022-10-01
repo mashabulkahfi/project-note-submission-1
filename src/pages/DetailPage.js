@@ -34,14 +34,14 @@ class DetailPage extends React.Component {
   }
 
   onArchiveHandler(id) {
-      archiveNote(id);
-      this.props.onNavigate();
+    archiveNote(id);
+    this.props.onNavigate();
   }
 
   onUnarchiveHandler(id) {
     unarchiveNote(id);
     this.props.onNavigate();
-}
+  }
 
   render() {
     if (this.state.note === null) {

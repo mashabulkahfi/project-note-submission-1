@@ -6,8 +6,8 @@ import ArchiveButton from './ArchiveButton';
 
 function NoteDetail({ note, onDelete, onArchive }) {
   const { id, title, body, createdAt, archived } = note;
-
   let titleButton;
+
   if (archived === true){
     titleButton = 'Pindahkan'
   } else {
@@ -20,9 +20,9 @@ function NoteDetail({ note, onDelete, onArchive }) {
       <p className="detail-page__createdAt">{showFormattedDate(createdAt)}</p>
       <div className="detail-page__body">{body}</div>
       <div className="detail-page__action">
-				 <DeleteButton id={id} onDelete={onDelete}/>
-				 <ArchiveButton id={id} onArchive={onArchive} titleButton={titleButton}/>
-			 </div>
+        <DeleteButton id={id} onDelete={onDelete}/>
+        <ArchiveButton id={id} onArchive={onArchive} titleButton={titleButton}/>
+			</div>
     </section>
   );
 }

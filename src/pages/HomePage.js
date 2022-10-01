@@ -7,37 +7,36 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { MdAdd } from "react-icons/md";
 
 function HomePageWrapper(){
-    const [ searchParams, setSearchParams ] = useSearchParams();
+  const [ searchParams, setSearchParams ] = useSearchParams();
 
-    const keyword = searchParams.get('keyword');
+  const keyword = searchParams.get('keyword');
 
-    function changeSearchParams(keyword){
-        setSearchParams({ keyword });
-    }
+  function changeSearchParams(keyword){
+    setSearchParams({ keyword });
+  }
 
-    return <HomePage defaultKeyword={keyword} keywordChange={changeSearchParams}/>
+  return <HomePage defaultKeyword={keyword} keywordChange={changeSearchParams}/>
 }
 
 class HomePage extends React.Component {
-	
-    constructor(props) {
-        super(props);
-        this.state = {
-            notes: getActiveNotes(),
-            keyword: props.defaultKeyword || '',
-        }
-
-		this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
+  constructor(props) {
+    super(props);
+    this.state = {
+      notes: getActiveNotes(),
+      keyword: props.defaultKeyword || '',
     }
 
-    onKeywordChangeHandler(keyword) {
+		this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
+  }
+
+  onKeywordChangeHandler(keyword) {
 		this.setState(() => {
 			return {
 				keyword,
 			}
 	 	});
 
-        this.props.keywordChange(keyword);
+    this.props.keywordChange(keyword);
 	}
 
   render() {
@@ -47,27 +46,27 @@ class HomePage extends React.Component {
 				return note;
 			} else {
 				return note.title.toLocaleLowerCase().includes(
-                    searchTerm.toLocaleLowerCase()
-                )
+          searchTerm.toLocaleLowerCase()
+        )
 			}
 		});
 
     return (
-    <section className="homepage">
+      <section className="homepage">
         <h2>Catatan Aktif</h2>
 
         <section className = "search-bar">
-            <NoteSearch keyword={this.state.keyword} keywordChange={this.onKeywordChangeHandler}/>
+          <NoteSearch keyword={this.state.keyword} keywordChange={this.onKeywordChangeHandler}/>
         </section>
 
         <NoteList notes={validNotes} active={true}/>
 
         <div className="homepage__action">
-            <Link to="/add">
-                <button className="action" type="button" title="tambah"><MdAdd /></button>
-            </Link>
+          <Link to="/add">
+            <button className="action" type="button" title="tambah"><MdAdd /></button>
+          </Link>
         </div>
-    </section>
+      </section>
     );
   }
 }
