@@ -1,5 +1,6 @@
 import React from 'react';
 import NoteItemBody from './NoteItemBody';
+import PropTypes from 'prop-types';
  
 function NoteItem({ title, body, id, createdAt }) {
  	return (
@@ -8,5 +9,12 @@ function NoteItem({ title, body, id, createdAt }) {
    	</div>
  	);
 }
+
+NoteItem.propTypes = {
+	title: PropTypes.string.isRequired,
+	body: PropTypes.string.isRequired,
+	id: PropTypes.string.isRequired,
+	createdAt: PropTypes.string.isRequired,
+  };
  
 export default NoteItem;
