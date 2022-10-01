@@ -1,5 +1,6 @@
 import React from 'react';
-import { getAllNotes, getArchivedNotes, unarchiveNote, deleteNote } from '../utils/local-data';
+import PropTypes from 'prop-types';
+import { getArchivedNotes } from '../utils/local-data';
 import NoteList from '../components/NoteList';
 import NoteSearch from '../components/NoteSearch';
 import { useSearchParams } from 'react-router-dom';
@@ -17,7 +18,6 @@ function ArchivePageWrapper() {
 }
 
 class ArchivePage extends React.Component {
-	
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -55,11 +55,15 @@ class ArchivePage extends React.Component {
 			<section className="search-bar">
 				<NoteSearch keyword={this.state.keyword} keywordChange={this.onKeywordChangeHandler}/>
 			</section>
-
 			<NoteList notes={validNotes}/>
 		</section>
     );
   }
 }
+
+ArchivePage.propTypes = {
+	defaultKeyword: PropTypes.string,
+	keywordChange: PropTypes.func.isRequired
+  };
 
 export default ArchivePageWrapper;
