@@ -1,10 +1,10 @@
 import React from 'react';
-import { getAllNotes, getActiveNotes, archiveNote, deleteNote } from '../utils/local-data';
+import PropTypes from 'prop-types';
+import { getActiveNotes } from '../utils/local-data';
 import NoteList from '../components/NoteList';
 import NoteSearch from '../components/NoteSearch';
-import { useSearchParams } from 'react-router-dom';
-import {MdAdd} from "react-icons/md";
-import { Link } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
+import { MdAdd } from "react-icons/md";
 
 function HomePageWrapper(){
     const [ searchParams, setSearchParams ] = useSearchParams();
@@ -51,7 +51,7 @@ class HomePage extends React.Component {
                 )
 			}
 		});
-        // console.log(getAllNotes());
+
     return (
     <section className="homepage">
         <h2>Catatan Aktif</h2>
@@ -71,5 +71,10 @@ class HomePage extends React.Component {
     );
   }
 }
+
+HomePage.propTypes = {
+	defaultKeyword: PropTypes.string,
+	keywordChange: PropTypes.func.isRequired
+};
 
 export default HomePageWrapper;
