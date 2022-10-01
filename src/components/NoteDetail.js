@@ -6,8 +6,6 @@ import ArchiveButton from './ArchiveButton';
 
 function NoteDetail({ note, onDelete, onArchive }) {
   const { id, title, body, createdAt, archived } = note;
-  console.log(id);
-  console.log(archived);
 
   let titleButton;
   if (archived === true){
@@ -30,7 +28,7 @@ function NoteDetail({ note, onDelete, onArchive }) {
 }
 
 NoteDetail.propTypes = {
-  note: PropTypes.arrayOf(PropTypes.object).isRequired,
+  note: PropTypes.object.isRequired,
   onDelete: PropTypes.func.isRequired,
   onArchive: PropTypes.func.isRequired
 };
