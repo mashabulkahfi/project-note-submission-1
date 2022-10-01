@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function NoteSearch({ keyword, keywordChange }) {
 	return (
@@ -11,5 +12,10 @@ function NoteSearch({ keyword, keywordChange }) {
 		/>
 	)
 }
+
+NoteSearch.propTypes = {
+	keyword: PropTypes.string.isRequired,
+	keywordChange: PropTypes.func.isRequired
+};
 
 export default NoteSearch;
