@@ -1,4 +1,4 @@
-/* :root {
+:root {
   --primary: #BB86FC;
   --primary-variant: #3700B3;
   --secondary: #03DAC6;
@@ -9,7 +9,7 @@
   --on-background: #FFFFFF;
   --on-background-grey: #c7c7c7;
   --on-surface: #FFFFFF;
-} */
+}
 
 [data-theme="light"] {
   --background: #DDDDDD;
@@ -132,7 +132,7 @@ main {
 }
 
 .detail-page__action, .homepage__action, .add-new-page__action {
-  /* position: fixed; */
+  position: fixed;
   display: flex;
   gap: 16px;
   bottom: 32px;

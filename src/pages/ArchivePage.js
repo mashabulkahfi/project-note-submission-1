@@ -2,96 +2,40 @@ import React from 'react';
 import { getAllNotes, getArchivedNotes, unarchiveNote, deleteNote } from '../utils/local-data';
 import NoteList from '../components/NoteList';
 import NoteSearch from '../components/NoteSearch';
+import { useSearchParams } from 'react-router-dom';
+
+function ArchivePageWrapper() {
+	const [ searchParams, setSearchParams ] = useSearchParams();
+
+    const keyword = searchParams.get('keyword');
+
+    function changeSearchParams(keyword){
+        setSearchParams({ keyword });
+    }
+
+    return <ArchivePage defaultKeyword={keyword} keywordChange={changeSearchParams}/>
+}
 
 class ArchivePage extends React.Component {
 	
-  constructor(props) {
-    super(props);
-    this.state = {
-      notes: getArchivedNotes(),
-			keyword: '',
-    }
+	constructor(props) {
+		super(props);
+		this.state = {
+			notes: getArchivedNotes(),
+			keyword: props.defaultKeyword || '',
+		}
 
-		this.onDeleteHandler = this.onDeleteHandler.bind(this);
-		// this.onAddNoteHandler = this.onAddNoteHandler.bind(this);
-		this.onArchiveHandler = this.onArchiveHandler.bind(this);
-		this.onKeywordAddHandler = this.onKeywordAddHandler.bind(this);
-        console.log(this.state.notes);
-  }
+		this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
+  	}
 
-//   onDeleteHandler(id) {
-//     const notes = this.state.notes.filter(note => note.id !== id);
-		
-//     this.setState((prevState) => {
-// 			return {
-// 				...prevState, notes
-// 			}
-// 	 	});
-//   }
-
-
-//   onArchiveHandler(id) {
-//     const notes = this.state.notes.map(note => {
-//     // if note.id == id update note.archived value based on previous value
-// 			if (note.id === id){
-// 				if (note.archived === true){
-// 					return {...note, archived:false};
-// 				} else {
-// 					return {...note, archived:true};
-// 				}
-// 			}
-//       return note
-//     })
-//     this.setState((prevState) => {
-// 			return {
-// 				...prevState, notes
-// 			}
-// 	 	});
-
-//   }
-
-onDeleteHandler(id) {
-    deleteNote(id);
-    this.setState((prevState) => {
-        return {
-            ...prevState, notes: getArchivedNotes()
-        }
-    })
-}
-
-onArchiveHandler(id) {
-    unarchiveNote(id);
-    console.log(getAllNotes());
-    this.setState((prevState) => {
-        return {
-            ...prevState, notes: getArchivedNotes()
-        }
-    })
-}
-
-//   onAddNoteHandler({ title, body }) {
-//     this.setState((prevState) => {
-//       return {
-//         notes:[
-//           ...prevState.notes,
-//           {
-//             id: +new Date(),
-//             title:title,
-//             body:body,
-//             createdAt: new Date(),
-//             archived: false,
-//           }
-//         ]
-//       }
-//     });
-//   }
-
-	onKeywordAddHandler({ keywordSearch }) {
-		this.setState((prevState) => {
+	onKeywordChangeHandler(keyword) {
+		this.setState(() => {
 			return {
-				...prevState, keyword:keywordSearch
+				keyword
 			}
 	 	});
+
+		this.props.keywordChange(keyword);
 	}
 
   render() {
@@ -100,33 +44,22 @@ onArchiveHandler(id) {
 			if (searchTerm === "") {
 				return note;
 			} else {
-				return note.title.toLocaleLowerCase().includes(searchTerm)
+				return note.title.toLocaleLowerCase().includes(
+					searchTerm.toLocaleLowerCase()
+				)
 			}
 		});
     return (
-      <div className="note-app">
-        <div className="note-app__header">
-					{/* <h1>Notes</h1> */}
-					{/* <div className="note-search">
-						<NoteSearch searchKeyword={this.onKeywordAddHandler}/>
-					</div> */}
-				</div>
-        <div className="note-app__body">
-					{/* <div className="note-input">
-						<h2>Buat Catatan</h2>
-						<NoteInput addNote={this.onAddNoteHandler}/>
-					</div> */}
-					{/* <h2>Catatan Aktif</h2>
-					<NoteList notes={validNotes} onDelete={this.onDeleteHandler} onArchive={this.onArchiveHandler} active={true}/> */}
-					<h2>Catatan Arsip</h2>
-                    <div className = "search-bar">
-                        <NoteSearch searchKeyword={this.onKeywordAddHandler}/>
-                    </div>
-					<NoteList notes={validNotes} onDelete={this.onDeleteHandler} onArchive={this.onArchiveHandler} active={false}/>
-				</div>
-      </div>
+		<section className='archives-page'>
+			<h2>Catatan Arsip</h2>
+			<section className="search-bar">
+				<NoteSearch keyword={this.state.keyword} keywordChange={this.onKeywordChangeHandler}/>
+			</section>
+
+			<NoteList notes={validNotes}/>
+		</section>
     );
   }
 }
 
-export default ArchivePage;
+export default ArchivePageWrapper;

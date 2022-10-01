@@ -6,7 +6,6 @@ function Navigation() {
     <nav className="navigation">
       <ul>
         <li><Link to="/archive">Arsip</Link></li>
-        <li><Link to="/add">New Note</Link></li>
       </ul>
     </nav>
   );

@@ -1,4 +1,5 @@
 import React from 'react';
+import { MdDone } from "react-icons/md";
 
 class NoteInput extends React.Component {
   constructor(props) {
@@ -55,7 +56,7 @@ class NoteInput extends React.Component {
         <textarea className="add-new-page__input__body" type="text" placeholder="Tuliskan catatanmu di sini ..." value={this.state.body} onChange={this.onBodyChangeEventHandler} required></textarea>
 
         <div className="add-new-page__action">
-            <button className="action" type="submit">Submit</button>
+            <button className="action" type="submit"><MdDone /></button>
         </div>
         
       </form>

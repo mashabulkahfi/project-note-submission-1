@@ -1,16 +1,9 @@
 import React from 'react';
 import NoteItem from './NoteItem';
  
-function NoteList({ notes, onDelete, onArchive, active }) {
-//   let validNote;
-  let titleButton;
+function NoteList({ notes }) {
   const validNote=notes;
 
-  if (active === true) {
-    titleButton = 'Arsipkan'
-  } else {
-    titleButton = 'Pindahkan'
-  }
   if (validNote.length > 0) {
     return (
       <section className="notes-list">
@@ -18,9 +11,6 @@ function NoteList({ notes, onDelete, onArchive, active }) {
          <NoteItem 
           key={note.id} 
           id={note.id}
-          onDelete={onDelete}
-          onArchive={onArchive}
-          titleButton={titleButton}
           {...note} />
        ))}
       </section>
