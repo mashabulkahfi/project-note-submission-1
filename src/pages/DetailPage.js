@@ -30,19 +30,16 @@ class DetailPage extends React.Component {
 
   onDeleteHandler(id) {
     deleteNote(id);
-    console.log("Delete handler");
     this.props.onNavigate();
   }
 
   onArchiveHandler(id) {
       archiveNote(id);
-      console.log("Archive handler");
       this.props.onNavigate();
   }
 
   onUnarchiveHandler(id) {
     unarchiveNote(id);
-    console.log("Un-Archive handler");
     this.props.onNavigate();
 }
 
