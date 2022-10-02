@@ -56,7 +56,7 @@ class HomePage extends React.Component {
 
   render() {
     if(this.state.initializing) {
-      return null;
+      return(<div className="loader"></div>);
     }
 
 		const searchTerm = this.state.keyword;

@@ -76,11 +76,16 @@ class NoteApp extends React.Component{
   }
 
   render() {
+    // const loader = document.querySelector('.loader');
+
+    // const hideLoader = () => loader.classList.add('loader--hide');
     if (this.state.initializing) {
-      return null;
+      return(<div className="loader"></div>)
     }
+    // hideLoader();
 
     if (this.state.authedUser === null) {
+      
       return (
         <LocaleProvider value={this.state.localeContext}>
           <div className="app-container">
@@ -98,6 +103,7 @@ class NoteApp extends React.Component{
         </LocaleProvider>
       );
     }
+
     return (
       <LocaleProvider value={this.state.localeContext}>
         <div className="app-container">
