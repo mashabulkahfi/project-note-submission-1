@@ -21,6 +21,7 @@ class NoteApp extends React.Component{
     };
 
     this.onLoginSuccess = this.onLoginSuccess.bind(this);
+    this.onLogout = this.onLogout.bind(this);
   }
 
   async componentDidMount() {
@@ -32,6 +33,16 @@ class NoteApp extends React.Component{
         initializing: false,
       };
     });
+  }
+
+  onLogout() {
+    this.setState(() => {
+      return {
+        authedUser: null
+      };
+    });
+
+    putAccessToken('');
   }
 
   async onLoginSuccess({ accessToken }){
@@ -69,7 +80,7 @@ class NoteApp extends React.Component{
       <div className="app-container">
         <header>
           <h1><Link to="/">Aplikasi Catatan</Link></h1>
-          <Navigation />
+          <Navigation logout={this.onLogout} name={this.state.authedUser.name}/>
         </header>
         <main>
           <Routes>
