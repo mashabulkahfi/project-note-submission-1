@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getArchivedNotes } from '../utils/local-data';
+// import { getArchivedNotes } from '../utils/local-data';
+import { getArchivedNotes } from '../utils/api';
 import NoteList from '../components/NoteList';
 import NoteSearch from '../components/NoteSearch';
 import { useSearchParams } from 'react-router-dom';
@@ -21,12 +22,25 @@ class ArchivePage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			notes: getArchivedNotes(),
+			notes: [],
 			keyword: props.defaultKeyword || '',
+      initializing: true,
 		}
 
 		this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
 	}
+
+	async componentDidMount() {
+		const { data } = await getArchivedNotes();
+	
+		this.setState((prev) => {
+		  return {
+			  ...prev,
+			  notes: data,
+        initializing: false,
+		  }
+		})
+	  }
 
 	onKeywordChangeHandler(keyword) {
 		this.setState(() => {
@@ -39,6 +53,10 @@ class ArchivePage extends React.Component {
 	}
 
   render() {
+    if(this.state.initializing) {
+      return null;
+    }
+    
 		const searchTerm = this.state.keyword;
 		const validNotes = this.state.notes.filter((note) => {
 			if (searchTerm === "") {

@@ -25,6 +25,7 @@ class HomePage extends React.Component {
     this.state = {
       notes: [],
       keyword: props.defaultKeyword || '',
+      initializing: true,
     }
 
 		this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
@@ -36,7 +37,8 @@ class HomePage extends React.Component {
     this.setState((prev) => {
       return {
         ...prev,
-        notes: data
+        notes: data,
+        initializing: false,
       }
     })
   }
@@ -52,6 +54,10 @@ class HomePage extends React.Component {
 	}
 
   render() {
+    if(this.state.initializing) {
+      return null;
+    }
+
 		const searchTerm = this.state.keyword;
 		const validNotes = this.state.notes.filter((note) => {
 			if (searchTerm === "") {

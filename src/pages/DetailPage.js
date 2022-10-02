@@ -21,7 +21,8 @@ class DetailPage extends React.Component {
     super(props);
 
     this.state = {
-      note: null
+      note: null,
+      initializing: true, 
     };
 
     this.onDeleteHandler = this.onDeleteHandler.bind(this);
@@ -34,7 +35,8 @@ class DetailPage extends React.Component {
 
     this.setState(() => {
       return {
-        note: data
+        note: data,
+        initializing: false,
       }
     })
   }
@@ -55,7 +57,7 @@ class DetailPage extends React.Component {
   }
 
   render() {
-    if (this.state.note === null) {
+    if (this.state.initializing) {
       return null;
     } else {
       if (this.state.note.archived === false){
