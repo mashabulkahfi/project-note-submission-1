@@ -24,10 +24,12 @@ class NoteApp extends React.Component{
         toggleLocale: () => {
           this.setState((prevState) => {
             // mengembalikan state dengan nilai locale terbaru
+            const newLocale = prevState.localeContext.locale === 'id' ? 'en' : 'id';
+            localStorage.setItem('locale', newLocale);
             return {
               localeContext: {
                 ...prevState.localeContext,
-                locale: prevState.localeContext.locale === 'id' ? 'en' : 'id',
+                locale: newLocale,
               }
             }
           })
