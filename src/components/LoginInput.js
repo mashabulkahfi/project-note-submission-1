@@ -1,55 +1,28 @@
 import React from 'react';
+import useInput from '../hooks/useInput';
 
-class LoginInput extends React.Component {
-	constructor(props) {
-		super(props);
-	
-		this.state = {
-			email: '',
-			password: '',
-		};
-	
-		this.onEmailChangeHandler = this.onEmailChangeHandler.bind(this);
-		this.onPasswordChangeHandler = this.onPasswordChangeHandler.bind(this);
-		this.onSubmitHandler = this.onSubmitHandler.bind(this);
-	}
-   
-	onEmailChangeHandler(event) {
-		this.setState(() => {
-			return {
-				email: event.target.value
-			}
-		})
-	}
-   
-	onPasswordChangeHandler(event) {
-		this.setState(() => {
-			return {
-				password: event.target.value
-			};
-		});
-	}
-	
-	onSubmitHandler(event) {
+function LoginInput({ login }) {
+	const [email, OnEmailChange] = useInput('');
+	const [password, OnPasswordChange] = useInput('');
+
+	function onSubmitHandler(event) {
 		event.preventDefault();
-	
-		this.props.login({
-			email: this.state.email,
-			password: this.state.password,
+
+		login({
+			email: email,
+			password: password,
 		});
 	}
-	
-	render() {
-		return (
-			<form onSubmit={this.onSubmitHandler} className='input-login'>
-				<label id="email">Email</label>
-				<input id="email" type="email" placeholder='Email' value={this.state.email} onChange={this.onEmailChangeHandler} />
-				<label id="password">Password</label>
-				<input id="password" type="password" placeholder='Password' value={this.state.password} onChange={this.onPasswordChangeHandler} />
-				<button>Login</button>
-			</form>
-		);
-	}
+
+	return (
+		<form onSubmit={onSubmitHandler} className='input-login'>
+			<label id="email">Email</label>
+			<input id="email" type="email" placeholder='Email' value={email} onChange={OnEmailChange} />
+			<label id="password">Password</label>
+			<input id="password" type="password" placeholder='Password' value={password} onChange={OnPasswordChange} />
+			<button>Login</button>
+		</form>
+	)
 }
    
 export default LoginInput;
