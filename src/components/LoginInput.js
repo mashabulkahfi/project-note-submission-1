@@ -42,9 +42,9 @@ class LoginInput extends React.Component {
 	render() {
 		return (
 			<form onSubmit={this.onSubmitHandler} className='input-login'>
-				<label for="email">Email</label>
+				<label id="email">Email</label>
 				<input id="email" type="email" placeholder='Email' value={this.state.email} onChange={this.onEmailChangeHandler} />
-				<label for="password">Password</label>
+				<label id="password">Password</label>
 				<input id="password" type="password" placeholder='Password' value={this.state.password} onChange={this.onPasswordChangeHandler} />
 				<button>Login</button>
 			</form>
