@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getArchivedNotes } from '../utils/local-data';
+// import { getArchivedNotes } from '../utils/local-data';
+import { getArchivedNotes } from '../utils/api';
 import NoteList from '../components/NoteList';
 import NoteSearch from '../components/NoteSearch';
 import { useSearchParams } from 'react-router-dom';
+import { LocaleConsumer } from '../contexts/LocaleContext';
 
 function ArchivePageWrapper() {
 	const [ searchParams, setSearchParams ] = useSearchParams();
@@ -21,12 +23,25 @@ class ArchivePage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			notes: getArchivedNotes(),
+			notes: [],
 			keyword: props.defaultKeyword || '',
+      initializing: true,
 		}
 
 		this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
 	}
+
+	async componentDidMount() {
+		const { data } = await getArchivedNotes();
+	
+		this.setState((prev) => {
+		  return {
+			  ...prev,
+			  notes: data,
+        initializing: false,
+		  }
+		})
+	  }
 
 	onKeywordChangeHandler(keyword) {
 		this.setState(() => {
@@ -39,6 +54,10 @@ class ArchivePage extends React.Component {
 	}
 
   render() {
+    if(this.state.initializing) {
+      return null;
+    }
+
 		const searchTerm = this.state.keyword;
 		const validNotes = this.state.notes.filter((note) => {
 			if (searchTerm === "") {
@@ -50,13 +69,21 @@ class ArchivePage extends React.Component {
 			}
 		});
     return (
-		<section className='archives-page'>
-			<h2>Catatan Arsip</h2>
-			<section className="search-bar">
-				<NoteSearch keyword={this.state.keyword} keywordChange={this.onKeywordChangeHandler}/>
-			</section>
-			<NoteList notes={validNotes}/>
-		</section>
+      <LocaleConsumer>
+        {
+          ({ locale }) => {
+            return (
+              <section className='archives-page'>
+                <h2>{locale === 'id' ? 'Catatan Arsip' : 'Archived Notes'}</h2>
+                <section className="search-bar">
+                  <NoteSearch keyword={this.state.keyword} keywordChange={this.onKeywordChangeHandler}/>
+                </section>
+                <NoteList notes={validNotes}/>
+              </section>
+            )
+          }
+        }
+      </LocaleConsumer>
     );
   }
 }

@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getActiveNotes } from '../utils/local-data';
+// import { getActiveNotes } from '../utils/local-data';
+import { getActiveNotes } from '../utils/api';  
 import NoteList from '../components/NoteList';
 import NoteSearch from '../components/NoteSearch';
 import { useSearchParams, Link } from 'react-router-dom';
 import { MdAdd } from "react-icons/md";
+import { LocaleConsumer } from '../contexts/LocaleContext';
 
 function HomePageWrapper(){
   const [ searchParams, setSearchParams ] = useSearchParams();
@@ -22,11 +24,24 @@ class HomePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      notes: getActiveNotes(),
+      notes: [],
       keyword: props.defaultKeyword || '',
+      initializing: true,
     }
 
 		this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
+  }
+
+  async componentDidMount() {
+    const { data } = await getActiveNotes();
+
+    this.setState((prev) => {
+      return {
+        ...prev,
+        notes: data,
+        initializing: false,
+      }
+    })
   }
 
   onKeywordChangeHandler(keyword) {
@@ -40,6 +55,10 @@ class HomePage extends React.Component {
 	}
 
   render() {
+    if(this.state.initializing) {
+      return null;
+    }
+
 		const searchTerm = this.state.keyword;
 		const validNotes = this.state.notes.filter((note) => {
 			if (searchTerm === "") {
@@ -52,21 +71,29 @@ class HomePage extends React.Component {
 		});
 
     return (
-      <section className="homepage">
-        <h2>Catatan Aktif</h2>
+      <LocaleConsumer>
+        {
+          ({ locale }) => {
+            return (
+              <section className="homepage">
+                <h2>{locale === 'id' ? 'Catatan Aktif' : 'Active Notes'}</h2>
 
-        <section className = "search-bar">
-          <NoteSearch keyword={this.state.keyword} keywordChange={this.onKeywordChangeHandler}/>
-        </section>
+                <section className = "search-bar">
+                  <NoteSearch keyword={this.state.keyword} keywordChange={this.onKeywordChangeHandler}/>
+                </section>
 
-        <NoteList notes={validNotes} active={true}/>
+                <NoteList notes={validNotes} active={true}/>
 
-        <div className="homepage__action">
-          <Link to="/add">
-            <button className="action" type="button" title="tambah"><MdAdd /></button>
-          </Link>
-        </div>
-      </section>
+                <div className="homepage__action">
+                  <Link to="/add">
+                    <button className="action" type="button" title="tambah"><MdAdd /></button>
+                  </Link>
+                </div>
+              </section>
+            )
+          }
+        }
+      </LocaleConsumer>
     );
   }
 }
