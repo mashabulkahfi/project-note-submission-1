@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate, useParams } from 'react-router-dom';
 import NoteDetail from '../components/NoteDetail';
-import { getNote, deleteNote, archiveNote, unarchiveNote } from '../utils/local-data';
+// import { getNote, deleteNote, archiveNote, unarchiveNote } from '../utils/local-data';
+import { getNote, deleteNote, archiveNote, unarchiveNote} from '../utils/api';
 
 function DetailPageWrapper() {
   const { id } = useParams();
@@ -20,7 +21,7 @@ class DetailPage extends React.Component {
     super(props);
 
     this.state = {
-      note: getNote(props.id)
+      note: null
     };
 
     this.onDeleteHandler = this.onDeleteHandler.bind(this);
@@ -28,24 +29,34 @@ class DetailPage extends React.Component {
     this.onUnarchiveHandler = this.onUnarchiveHandler.bind(this);
   }
 
-  onDeleteHandler(id) {
-    deleteNote(id);
+  async componentDidMount() {
+    const { data } = await getNote(this.props.id);
+
+    this.setState(() => {
+      return {
+        note: data
+      }
+    })
+  }
+
+  async onDeleteHandler(id) {
+    await deleteNote(id);
     this.props.onNavigate();
   }
 
-  onArchiveHandler(id) {
-    archiveNote(id);
+  async onArchiveHandler(id) {
+    await archiveNote(id);
     this.props.onNavigate();
   }
 
-  onUnarchiveHandler(id) {
-    unarchiveNote(id);
+  async onUnarchiveHandler(id) {
+    await unarchiveNote(id);
     this.props.onNavigate();
   }
 
   render() {
     if (this.state.note === null) {
-      return <p>Note is not found!</p>;
+      return null;
     } else {
       if (this.state.note.archived === false){
         return (
