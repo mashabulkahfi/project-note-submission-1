@@ -15,19 +15,14 @@ class Navigation extends React.Component{
       theme: localStorage.getItem('theme') || 'dark',
       toggleTheme: () => {
         this.setState((prevState) => {
-          // mendapatkan nilai tema baru berdasarkan state sebelumnya
           const newTheme = prevState.theme === 'dark' ? 'light' : 'dark';
-
-          // menyimpan nilai tema baru ke local storage
           localStorage.setItem('theme', newTheme);
-
-          // mengembalikan state dengan nilai theme terbaru
           return {
             theme: newTheme,
-          }
+          };
         })
       }
-    }
+    };
   }
 
   componentDidMount() {

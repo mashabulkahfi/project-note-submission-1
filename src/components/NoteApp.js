@@ -30,7 +30,7 @@ class NoteApp extends React.Component{
                 ...prevState.localeContext,
                 locale: newLocale,
               }
-            }
+            };
           })
         }
       }
@@ -76,13 +76,9 @@ class NoteApp extends React.Component{
   }
 
   render() {
-    // const loader = document.querySelector('.loader');
-
-    // const hideLoader = () => loader.classList.add('loader--hide');
     if (this.state.initializing) {
       return(<div className="loader"></div>)
     }
-    // hideLoader();
 
     if (this.state.authedUser === null) {
       
