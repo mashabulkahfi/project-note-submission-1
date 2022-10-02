@@ -7,6 +7,8 @@ import ArchivePage from '../pages/ArchivePage';
 import DetailPageWrapper from '../pages/DetailPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import RegisterPage from '../pages/RegisterPage';
+import LoginPage from '../pages/LoginPage';
+import { getUserLogged, putAccessToken } from '../utils/api';
 
 
 class NoteApp extends React.Component{
@@ -15,11 +17,40 @@ class NoteApp extends React.Component{
 
     this.state = {
       authedUser: null,
-    }
+      initializing: true,
+    };
+
+    this.onLoginSuccess = this.onLoginSuccess.bind(this);
+  }
+
+  async componentDidMount() {
+    const { data } = await getUserLogged();
+
+    this.setState(() => {
+      return {
+        authedUser: data,
+        initializing: false,
+      };
+    });
+  }
+
+  async onLoginSuccess({ accessToken }){
+    putAccessToken(accessToken);
+    const { data } = await getUserLogged();
+
+    this.setState(() => {
+      return {
+        authedUser: data,
+      };
+    });
   }
 
   render() {
-    if (this.state.authedUser === null){
+    if (this.state.initializing) {
+      return null;
+    }
+
+    if (this.state.authedUser === null) {
       return (
         <div className="app-container">
           <header>
@@ -27,7 +58,7 @@ class NoteApp extends React.Component{
           </header>
           <main>
             <Routes>
-              <Route path="/*" element={<p>Halaman Login</p>}/>
+              <Route path="/*" element={<LoginPage loginSuccess={this.onLoginSuccess} />}/>
               <Route path="/register" element={<RegisterPage />}/>
             </Routes>
           </main>
