@@ -58,7 +58,7 @@ class DetailPage extends React.Component {
 
   render() {
     if (this.state.initializing) {
-      return null;
+      return(<div className="loader"></div>);
     } else {
       if (this.state.note.archived === false){
         return (

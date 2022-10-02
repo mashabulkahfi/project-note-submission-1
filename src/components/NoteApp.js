@@ -23,7 +23,6 @@ class NoteApp extends React.Component{
         locale: localStorage.getItem('locale') || 'id',
         toggleLocale: () => {
           this.setState((prevState) => {
-            // mengembalikan state dengan nilai locale terbaru
             const newLocale = prevState.localeContext.locale === 'id' ? 'en' : 'id';
             localStorage.setItem('locale', newLocale);
             return {
@@ -31,7 +30,7 @@ class NoteApp extends React.Component{
                 ...prevState.localeContext,
                 locale: newLocale,
               }
-            }
+            };
           })
         }
       }
@@ -44,8 +43,9 @@ class NoteApp extends React.Component{
   async componentDidMount() {
     const { data } = await getUserLogged();
 
-    this.setState(() => {
+    this.setState((prevState) => {
       return {
+        ...prevState,
         authedUser: data,
         initializing: false,
       };
@@ -53,8 +53,9 @@ class NoteApp extends React.Component{
   }
 
   onLogout() {
-    this.setState(() => {
+    this.setState((prevState) => {
       return {
+        ...prevState,
         authedUser: null
       };
     });
@@ -66,8 +67,9 @@ class NoteApp extends React.Component{
     putAccessToken(accessToken);
     const { data } = await getUserLogged();
 
-    this.setState(() => {
+    this.setState((prevState) => {
       return {
+        ...prevState,
         authedUser: data,
       };
     });
@@ -75,10 +77,11 @@ class NoteApp extends React.Component{
 
   render() {
     if (this.state.initializing) {
-      return null;
+      return(<div className="loader"></div>)
     }
 
     if (this.state.authedUser === null) {
+      
       return (
         <LocaleProvider value={this.state.localeContext}>
           <div className="app-container">
@@ -96,6 +99,7 @@ class NoteApp extends React.Component{
         </LocaleProvider>
       );
     }
+
     return (
       <LocaleProvider value={this.state.localeContext}>
         <div className="app-container">
