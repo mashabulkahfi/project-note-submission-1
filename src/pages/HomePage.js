@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getActiveNotes } from '../utils/local-data';
+// import { getActiveNotes } from '../utils/local-data';
+import { getActiveNotes } from '../utils/api';  
 import NoteList from '../components/NoteList';
 import NoteSearch from '../components/NoteSearch';
 import { useSearchParams, Link } from 'react-router-dom';
@@ -22,11 +23,22 @@ class HomePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      notes: getActiveNotes(),
+      notes: [],
       keyword: props.defaultKeyword || '',
     }
 
 		this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
+  }
+
+  async componentDidMount() {
+    const { data } = await getActiveNotes();
+
+    this.setState((prev) => {
+      return {
+        ...prev,
+        notes: data
+      }
+    })
   }
 
   onKeywordChangeHandler(keyword) {
