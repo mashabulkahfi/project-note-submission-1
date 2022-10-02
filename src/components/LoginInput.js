@@ -46,7 +46,7 @@ class LoginInput extends React.Component {
 				<input id="email" type="email" placeholder='Email' value={this.state.email} onChange={this.onEmailChangeHandler} />
 				<label for="password">Password</label>
 				<input id="password" type="password" placeholder='Password' value={this.state.password} onChange={this.onPasswordChangeHandler} />
-				<button>Masuk</button>
+				<button>Login</button>
 			</form>
 		);
 	}

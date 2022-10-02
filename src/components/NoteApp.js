@@ -84,6 +84,7 @@ class NoteApp extends React.Component{
           <div className="app-container">
             <header>
               <h1>{this.state.localeContext.locale === 'id' ? 'Aplikasi Catatan' : 'Notes App'}</h1>
+              <Navigation account={false}/>
             </header>
             <main>
               <Routes>
@@ -100,7 +101,7 @@ class NoteApp extends React.Component{
         <div className="app-container">
           <header>
             <h1><Link to="/">{this.state.localeContext.locale === 'id' ? 'Aplikasi Catatan' : 'Notes App'}</Link></h1>
-            <Navigation logout={this.onLogout} name={this.state.authedUser.name}/>
+            <Navigation logout={this.onLogout} name={this.state.authedUser.name} account={true}/>
           </header>
           <main>
             <Routes>

@@ -5,17 +5,7 @@ import { Link } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
 import { LocaleConsumer } from '../contexts/LocaleContext';
 import ToggleLocale from './ToggleLocale';
- 
-// function Navigation({ logout, name }) {
-//   return (
-//     <nav className="navigation">
-//       <ul>
-//         <li><Link to="/archive">Arsip</Link></li>
-//         <li><button type="button" className="button-logout" onClick={logout}><FiLogOut/>{name}</button></li>
-//       </ul>
-//     </nav>
-//   );
-// }
+
 class Navigation extends React.Component{
   constructor(props){
     super(props);
@@ -50,6 +40,18 @@ class Navigation extends React.Component{
   }
 
   render() {
+    if (this.props.account === false){
+      return(
+        <ThemeProvider value={this.state}>
+          <nav className="navigation">
+            <ul>
+              <li><ToggleLocale/></li>
+              <li><ToggleTheme /></li>
+            </ul>
+          </nav>
+        </ThemeProvider>
+      )
+    }
     return (
       <LocaleConsumer>
         {
