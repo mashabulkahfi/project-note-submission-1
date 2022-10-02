@@ -3,6 +3,8 @@ import { ThemeProvider } from '../contexts/ThemeContext';
 import ToggleTheme from './ToggleTheme';
 import { Link } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
+import { LocaleConsumer } from '../contexts/LocaleContext';
+import ToggleLocale from './ToggleLocale';
  
 // function Navigation({ logout, name }) {
 //   return (
@@ -49,16 +51,25 @@ class Navigation extends React.Component{
 
   render() {
     return (
-      <ThemeProvider value={this.state}>
-        <nav className="navigation">
-          <ul>
-            <li><Link to="/archive">Arsip</Link></li>
-            <li><ToggleTheme /></li>
-            <li><button type="button" className="button-logout" onClick={this.props.logout}><FiLogOut/>{this.props.name}</button></li>
-          </ul>
-        </nav>
-      </ThemeProvider>
-    );
+      <LocaleConsumer>
+        {
+          ({ locale }) => {
+            return (
+              <ThemeProvider value={this.state}>
+                <nav className="navigation">
+                  <ul>
+                    <li><Link to="/archive">{locale === 'id' ? 'Terarsip' : 'Archived'}</Link></li>
+                    <li><ToggleLocale/></li>
+                    <li><ToggleTheme /></li>
+                    <li><button type="button" className="button-logout" onClick={this.props.logout}><FiLogOut/>{this.props.name}</button></li>
+                  </ul>
+                </nav>
+              </ThemeProvider>
+            )
+          }
+        }
+      </LocaleConsumer>
+    )
   }
 }
  

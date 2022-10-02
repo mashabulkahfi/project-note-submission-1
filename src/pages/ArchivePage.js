@@ -5,6 +5,7 @@ import { getArchivedNotes } from '../utils/api';
 import NoteList from '../components/NoteList';
 import NoteSearch from '../components/NoteSearch';
 import { useSearchParams } from 'react-router-dom';
+import { LocaleConsumer } from '../contexts/LocaleContext';
 
 function ArchivePageWrapper() {
 	const [ searchParams, setSearchParams ] = useSearchParams();
@@ -56,7 +57,7 @@ class ArchivePage extends React.Component {
     if(this.state.initializing) {
       return null;
     }
-    
+
 		const searchTerm = this.state.keyword;
 		const validNotes = this.state.notes.filter((note) => {
 			if (searchTerm === "") {
@@ -68,13 +69,21 @@ class ArchivePage extends React.Component {
 			}
 		});
     return (
-		<section className='archives-page'>
-			<h2>Catatan Arsip</h2>
-			<section className="search-bar">
-				<NoteSearch keyword={this.state.keyword} keywordChange={this.onKeywordChangeHandler}/>
-			</section>
-			<NoteList notes={validNotes}/>
-		</section>
+      <LocaleConsumer>
+        {
+          ({ locale }) => {
+            return (
+              <section className='archives-page'>
+                <h2>{locale === 'id' ? 'Catatan Arsip' : 'Archived Notes'}</h2>
+                <section className="search-bar">
+                  <NoteSearch keyword={this.state.keyword} keywordChange={this.onKeywordChangeHandler}/>
+                </section>
+                <NoteList notes={validNotes}/>
+              </section>
+            )
+          }
+        }
+      </LocaleConsumer>
     );
   }
 }
