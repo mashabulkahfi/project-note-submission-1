@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
 import { LocaleConsumer } from '../contexts/LocaleContext';
 import ToggleLocale from './ToggleLocale';
+import PropTypes from 'prop-types';
 
 class Navigation extends React.Component{
   constructor(props){
@@ -43,12 +44,8 @@ class Navigation extends React.Component{
     if (this.props.account === false){
       return(
         <ThemeProvider value={this.state}>
-          <nav className="navigation">
-            <ul>
-              <li><ToggleLocale/></li>
-              <li><ToggleTheme /></li>
-            </ul>
-          </nav>
+          <ToggleLocale/>
+          <ToggleTheme />
         </ThemeProvider>
       )
     }
@@ -61,11 +58,11 @@ class Navigation extends React.Component{
                 <nav className="navigation">
                   <ul>
                     <li><Link to="/archive">{locale === 'id' ? 'Terarsip' : 'Archived'}</Link></li>
-                    <li><ToggleLocale/></li>
-                    <li><ToggleTheme /></li>
-                    <li><button type="button" className="button-logout" onClick={this.props.logout}><FiLogOut/>{this.props.name}</button></li>
                   </ul>
                 </nav>
+                <ToggleLocale/>
+                <ToggleTheme />
+                <button type="button" className="button-logout" onClick={this.props.logout}><FiLogOut/>{this.props.name}</button>
               </ThemeProvider>
             )
           }
@@ -74,5 +71,11 @@ class Navigation extends React.Component{
     )
   }
 }
+
+Navigation.propTypes = {
+  account: PropTypes.bool.isRequired,
+  logout: PropTypes.func,
+  name: PropTypes.string
+};
  
 export default Navigation;
